@@ -1,5 +1,6 @@
 import Usuario from '../models/Usuario.js';
 import generarId from '../helpers/generarId.js';
+import generarJWT from '../helpers/generarJWT.js';
 
 const registrar = async (req, res) => {
     // Evitar usuarios duplicados
@@ -42,7 +43,8 @@ const autentificar = async (req, res) => {
         res.json({
             _id: usuario._id,
             nombre: usuario.nombre,
-            email: usuario.email
+            email: usuario.email, 
+            token: generarJWT()
         })
 
     } else {
