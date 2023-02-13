@@ -8,7 +8,7 @@ const registrar = async (req, res) => {
 
     if (existeUsuario) {
         const error = new Error('Usuario ya registrado');
-        return res.status(400).json({msg: error.message})
+        return res.status(400).json({ msg: error.message })
     }
     try {
         const usuario = new Usuario(req.body);
@@ -18,8 +18,30 @@ const registrar = async (req, res) => {
     } catch (error) {
         console.log(error);
     }
+};
+
+const autentificar = async (req, res) => {
+    const { email, password } = req.body;
+
+    // Comprobar si el usuario existe
+    const usuario = await Usuario.findOne({ email });
+
+    if (!usuario) {
+        const error = new Error('El usuario no existe');
+        return res.status(404).json({ msg: error.message })
+    }
+
+    // Comprobar si el usuario esta confirmado o no
+    if (!usuario.confirmado) {
+        const error = new Error('Tu cuenta no ha sido confirmada');
+        return res.status(403).json({ msg: error.message })
+    }
+
+    // Comprobar password
+
 }
 
 export {
-    registrar
+    registrar,
+    autentificar
 }
